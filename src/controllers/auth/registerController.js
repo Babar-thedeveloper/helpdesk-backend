@@ -13,6 +13,7 @@ export const register = async (req, res) => {
       department,
       designation,
       password,
+      role = "user", // allow optional role override if needed
     } = req.validatedData?.body;
 
     console.log("Registration request:", {
@@ -22,6 +23,7 @@ export const register = async (req, res) => {
       email,
       department,
       designation,
+      role,
     });
 
     // Check if email already exists
@@ -49,8 +51,8 @@ export const register = async (req, res) => {
     // Hash password
     const hashedPassword = await argon2.hash(password);
 
-    // Insert new user with default role "user"
-    await db.insert(userTable).values({
+    // Base user data
+    const newUserData = {
       employeeId,
       fullName,
       phone,
@@ -58,8 +60,16 @@ export const register = async (req, res) => {
       department,
       designation,
       password: hashedPassword,
-      role: "user", // default role
-    });
+      role,
+    };
+
+    // Conditionally add availability if role === 'agent'
+    if (role === "agent") {
+      newUserData.availability = "available"; // initial state
+    }
+
+    // Insert new user
+    await db.insert(userTable).values(newUserData);
 
     console.log("User registered:", email);
     return res.status(201).json({ message: "User registered successfully." });

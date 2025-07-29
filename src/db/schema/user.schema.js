@@ -1,4 +1,10 @@
-import { mysqlTable, varchar, serial, index, mysqlEnum } from 'drizzle-orm/mysql-core';
+import {
+  mysqlTable,
+  varchar,
+  serial,
+  index,
+  mysqlEnum,
+} from 'drizzle-orm/mysql-core';
 
 // User Table Schema
 export const userTable = mysqlTable('users', {
@@ -12,10 +18,16 @@ export const userTable = mysqlTable('users', {
   designation: varchar('designation', { length: 50 }).notNull(),
   password: varchar('password', { length: 255 }).notNull(), // hashed password
 
-  // New Role Field (for RBAC)
+  // Role-Based Access Control
   role: mysqlEnum('role', ['user', 'admin', 'supervisor', 'agent', 'department_head'])
     .notNull()
     .default('user'),
+
+  // New Field: Agent Availability (Only applicable if role === 'agent')
+  availability: mysqlEnum('availability', ['available', 'busy'])
+    .default('available')
+    .notNull(), // will be default for agent; backend should set NULL or ignore for others
+
 }, (users) => ({
   emailIdx: index('email_idx').on(users.email),
   employeeIdIdx: index('employee_id_idx').on(users.employeeId),

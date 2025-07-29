@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `availability` enum('available','busy') DEFAULT 'available' NOT NULL;

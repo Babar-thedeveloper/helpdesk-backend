@@ -15,6 +15,13 @@
       "when": 1753778227361,
       "tag": "0001_mighty_kulan_gath",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1753786792799,
+      "tag": "0002_fast_oracle",
+      "breakpoints": true
     }
   ]
 }
