@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `role` enum('user','admin','supervisor','agent','department_head') DEFAULT 'user' NOT NULL;
