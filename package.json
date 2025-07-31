@@ -16,7 +16,7 @@
   "dependencies": {
     "argon2": "^0.43.0",
     "cors": "^2.8.5",
-    "drizzle-orm": "^0.43.1",
+    "drizzle-orm": "^0.44.4",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",

@@ -1,0 +1,1 @@
+ALTER TABLE `tickets` MODIFY COLUMN `description` varchar(255);
