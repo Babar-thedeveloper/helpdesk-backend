@@ -20,10 +20,11 @@ export const ticketSchema = z.object({
     .int("Agent ID must be an integer")
     .positive("Agent ID must be a positive integer")
     .optional(), // Optional for when agent is not assigned
-  department: z
-    .string()
-    .min(1, "Department is required")
-    .max(50, "Department name cannot be longer than 50 characters"),
+  // department: z
+  //   .string()
+  //   // .min(1, "Department is required")
+  //   // .max(50, "Department name cannot be longer than 50 characters") 
+  //   ,
 
   description: z
     .string()

@@ -2,44 +2,34 @@ import { db } from '../config/db.js';  // Import the database connection
 import { ticketTable } from '../db/schema/tickets.schema.js';  // Import the ticket schema
 import { userTable } from '../db/schema/user.schema.js';
 
-// Create a new ticket (POST)
+
 export const createTicket = async (req, res) => {
   try {
-    const { userId, department, description } = req.body; // Get department and description from request
+    const { userId, supervisorId, department, description } = req.body;
 
-    // Check if description is not empty
-    if (!description || description.trim() === "") {
-      return res.status(400).json({ message: 'Description is required' });
-    }
+    const result = await db
+      .insert(ticketTable)
+      .values({
+        userId,
+        supervisorId,
+        department,           // ✅ Add this line
+        description,
+        status: 'open',
+        expired: false,
+        createdAt: new Date(),
+      });
 
-    // Find the supervisor based on department and role
-    const supervisor = await db
-      .select('id', 'fullName')
-      .from(userTable)
-      .where({ department, role: 'supervisor' })
-      .limit(1); // We assume there's one supervisor per department
-
-    if (!supervisor.length) {
-      return res.status(404).json({ message: 'No supervisor found for the selected department' });
-    }
-
-    const supervisorId = supervisor[0].id;
-
-    // Insert the new ticket with the relevant details
-    const [newTicket] = await db.insert(ticketTable).values({
-      userId,
-      supervisorId,
-      department,
-      description,
-      status: 'open',  // Default value for status
+    return res.status(201).json({
+      message: 'Ticket created successfully',
+      insertedId: result.insertId,
     });
 
-    return res.status(201).json(newTicket);
   } catch (error) {
-    console.error(error);
+    console.error('❌ Error creating ticket:', error);
     return res.status(500).json({ message: 'Error creating ticket' });
   }
 };
+
 
 // Get all tickets (GET)
 export const getAllTickets = async (req, res) => {
