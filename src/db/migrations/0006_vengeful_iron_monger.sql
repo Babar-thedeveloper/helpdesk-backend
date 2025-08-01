@@ -1,0 +1,1 @@
+ALTER TABLE `users` MODIFY COLUMN `employee_id` int NOT NULL;
