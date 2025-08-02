@@ -16,4 +16,7 @@ router.use('/tickets', ticketRoutes);
 // suepervisor  routes
 router.use('/supervisor',supervisorRoutes);
 
+
+// router.use('/api/supervisor', supervisorRoutes);
+
 export default router;
