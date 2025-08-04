@@ -1,5 +1,5 @@
 import express from 'express';
-import { assignTicketToAgent, getAgentsByDepartment, getSupervisorByDepartmentAndRole } from '../controllers/supervisor.controller.js';
+import { assignTicketToAgent, getAgentsByDepartment, getSupervisorByDepartmentAndRole, getUserByEmployeeId } from '../controllers/supervisor.controller.js';
 import { getAllDepartments } from '../controllers/department.controller.js';
 import { getSupervisorTickets } from '../controllers/supervisor.controller.js';
 
@@ -67,6 +67,98 @@ const router = express.Router();
  *                   example: "Internal server error."
  */
 router.post('/:departmentName', getSupervisorByDepartmentAndRole);
+
+/**
+ * @swagger
+ * /supervisor/user/{employeeId}:
+ *   get:
+ *     summary: Get user by employee ID
+ *     description: Retrieve a single user from the database using their employee ID.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - name: employeeId
+ *         in: path
+ *         required: true
+ *         description: The employee ID of the user
+ *         schema:
+ *           type: integer
+ *           example: 101
+ *     responses:
+ *       200:
+ *         description: User found and returned successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     fullName:
+ *                       type: string
+ *                       example: "Alice Johnson"
+ *                     email:
+ *                       type: string
+ *                       example: "alice@example.com"
+ *                     phone:
+ *                       type: string
+ *                       example: "+1234567890"
+ *                     department:
+ *                       type: string
+ *                       example: "Support"
+ *                     designation:
+ *                       type: string
+ *                       example: "Agent"
+ *                     employeeId:
+ *                       type: integer
+ *                       example: 101
+ *       400:
+ *         description: Invalid or missing employee ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid or missing employee ID"
+ *       404:
+ *         description: No user found with the provided employee ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       500:
+ *         description: Internal server error while fetching user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Failed to fetch user. Please try again later."
+ */
+
+router.get('/user/:employeeId', getUserByEmployeeId);
+
 
 /**
  * @swagger

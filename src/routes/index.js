@@ -4,7 +4,7 @@ import express from 'express';
 import authRoutes from './authRoutes.js';  // Assuming this is your auth routes
 import ticketRoutes from './ticketRoutes.js';  // Import ticket routes
 import supervisorRoutes from './supervisorRoutes.js';  // Import supervisor routes if needed
-
+import agentRoutes from './agentRoutes.js';  // Import agent routes
 const router = express.Router();
 
 // Auth routes
@@ -17,6 +17,6 @@ router.use('/tickets', ticketRoutes);
 router.use('/supervisor',supervisorRoutes);
 
 
-// router.use('/api/supervisor', supervisorRoutes);
+router.use('/agent', agentRoutes);  // Use agent routes
 
 export default router;

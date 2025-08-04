@@ -179,3 +179,47 @@ export const assignTicketToAgent = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+
+
+
+export const getUserByEmployeeId = async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+    const parsedId = parseInt(employeeId);
+
+    if (!parsedId || isNaN(parsedId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or missing employee ID",
+      });
+    }
+
+    console.log("🔍 Fetching user with employeeId =", parsedId);
+
+    const user = await db
+      .select()
+      .from(userTable)
+      .where(eq(userTable.employeeId, parsedId));
+
+    if (user.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user: user[0],
+    });
+
+  } catch (error) {
+    console.error("🔥 Error in getUserByEmployeeId:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch user. Please try again later.",
+    });
+  }
+};
